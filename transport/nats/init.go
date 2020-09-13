@@ -1,6 +1,7 @@
 package nats
 
 import (
+	"fmt"
 	"github.com/hermeschat/proto"
 	"github.com/nats-io/stan.go"
 )
@@ -23,11 +24,13 @@ func InitMessageHandler(clusterId string, clientId string) (MessageHandler, erro
 }
 
 func StanStreamConnection(clusterId string, clientId string) (stan.Conn, error) {
-	return stan.Connect(clusterId, clientId)
+	return stan.Connect(clusterId, clientId, stan.NatsURL("nats://localhost:4223"))
 }
 
 func (c *tempStructNameNats) StreamSubscriber(subject string, g proto.Pusher_PusherEventBuffServer) (stan.Subscription, error) {
+	fmt.Println("subscribe started")
 	sub, err := c.Subscribe(subject, func(msg *stan.Msg) {
+		fmt.Println("subscriber received message")
 		_ = g.Send(&proto.PusherEvent{Event: &proto.PusherEvent_Server{Server: &proto.Server{
 			FromSub: msg.Subject,
 			Data:    msg.Data,
@@ -42,6 +45,9 @@ func (c *tempStructNameNats) StreamSubscriber(subject string, g proto.Pusher_Pus
 }
 
 func (c *tempStructNameNats) StreamPublisher(subject string, msg []byte) error {
+	// if subscriber on subject is not online
+	// it wont work
+	// TODO maybe use queue subscriber
 	return c.Publish(subject, msg)
 }
 
