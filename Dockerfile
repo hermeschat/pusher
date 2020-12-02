@@ -1,7 +1,7 @@
 FROM golang:1.15 AS build
 
 RUN mkdir /app
-COPY . /appp
+COPY . /app
 WORKDIR /app
 
 RUN CGO_ENABLED=0 go build -o pusher
