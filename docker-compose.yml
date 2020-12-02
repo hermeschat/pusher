@@ -1,0 +1,12 @@
+version: '3'
+services:
+  pusher:
+    build: .
+    ports:
+      - 9090:9090
+  nats-streaming:
+    image: nats-streaming:0.18.0
+    container_name: "nats-streaming"
+    ports:
+      - 4222:4222
+      - 8222:8222
