@@ -2,8 +2,10 @@ version: '3'
 services:
   pusher:
     build: .
+    restart: always
     ports:
-      - 9090:9090
+      - 9000:9000
+    command: ["./pusher"]
   nats-streaming:
     image: nats-streaming:0.18.0
     container_name: "nats-streaming"
