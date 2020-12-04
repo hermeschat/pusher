@@ -27,7 +27,7 @@ func InitMessageHandler(clusterId string, clientId string) (MessageHandler, erro
 }
 
 func StanStreamConnection(clusterId string, clientId string) (stan.Conn, error) {
-	return stan.Connect(clusterId, clientId, stan.NatsURL("nats://localhost:4223"))
+	return stan.Connect(clusterId, clientId, stan.NatsURL("nats://localhost:4222"))
 }
 
 func (c *tempStructNameNats) StreamSubscriber(subject string, g proto.Pusher_PusherEventBuffServer) (stan.Subscription, error) {
